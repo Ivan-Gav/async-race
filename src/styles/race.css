@@ -1,0 +1,46 @@
+.race {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  height: fit-content;
+  overflow: hidden;
+}
+
+.track {
+  position:relative;
+  display: flex;
+  align-items: center;
+  border-top: solid 0.2rem black;
+  background: lightslategray;
+  padding: 0 2rem;
+  height: 60px;
+}
+
+.track:last-child {
+  border-bottom: solid 0.2rem black;
+}
+
+.track::after {
+  content: " ";
+  position: absolute;
+  z-index: 50;
+  right: 120px;
+  height: 100%;
+  width: 10px;
+  background: repeating-linear-gradient(
+  -45deg,
+  black,
+  black 5px,
+  yellow 5px,
+  yellow 10px
+) fixed;
+}
+
+.car {
+  width: 65px;
+  height: 30px;
+  z-index: 100;
+  background-color: orange;
+}
