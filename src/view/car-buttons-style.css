@@ -1,0 +1,66 @@
+.car-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 0.5rem;
+  column-gap: 0.5rem;
+  row-gap: 0.2rem;
+  background: linear-gradient(to top, #393939, #696969, #393939);
+  border-radius: 0.4rem;
+}
+
+.car-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 1.4rem;
+  border-radius: 0.4rem;
+  outline: 0.1rem solid #727272;
+  background: radial-gradient(ellipse, #696969, #393939);
+  color: #b0b0b0;
+  cursor: pointer;
+}
+
+.car-button:hover {
+  color: #d0d0d0;
+}
+
+.car-button:active {
+  color: #e8e29b;
+  outline: 0.1rem solid #303030;
+}
+
+.car-buttons_title {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Racing Sans One', cursive;
+  font-size: 1.6rem;
+  background: #bdc3c7;
+  background: linear-gradient(to top, #acacac, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.car-buttons_title::before,
+.car-buttons_title::after
+{
+  content: "";
+  width: 100%;
+  height: 0.3rem;
+  background: linear-gradient(to top, #dfdfdf, #eeeeee);
+  margin: 0.3rem 0.5rem 0;
+}
+
+.car-buttons_title::before {
+  border-radius: 100rem 0;
+}
+
+.car-buttons_title::after {
+  border-radius: 0 100rem;
+}

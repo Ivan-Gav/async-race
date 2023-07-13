@@ -1,13 +1,6 @@
-import { Car } from '../car/car';
-
-// const carsArray = [
-//   { name: 'Tesla', color: '#e6e6fa', id: 1 },
-//   { name: 'BMW', color: '#fede00', id: 2 },
-//   { name: 'Mersedes', color: '#6c779f', id: 3 },
-//   { name: 'Ford', color: '#ef3c40', id: 4 },
-//   { name: 'Kia', color: '#4dff00', id: 5 },
-//   { id: 6, name: 'Toyota', color: '#ff9b00' },
-// ];
+import Car from '../car/car';
+import carButtons from './car-buttons-view';
+import carSVG from '../car/car-svg';
 
 const createTrack = (auto: Car): HTMLElement => {
   const track = document.createElement('div');
@@ -15,11 +8,21 @@ const createTrack = (auto: Car): HTMLElement => {
 
   const car = document.createElement('div');
   car.className = 'car';
-  if (auto.id) car.id = auto.id.toString();
+  if (auto.id) car.id = `c${auto.id}`;
   car.title = auto.name;
-  car.style.backgroundColor = auto.color;
+  let carImage = carSVG;
+  carImage = carImage.replace('id="path2853" style="fill:#ffffff"', `id="path2853" style="fill:${auto.color}"`);
+  car.innerHTML = carImage;
+  // car.style.backgroundColor = auto.color;
 
-  track.append(car);
+  const road = document.createElement('div');
+  road.className = 'road';
+  road.append(car);
+
+  track.append(
+    carButtons(auto.name),
+    road,
+  );
   return track;
 };
 

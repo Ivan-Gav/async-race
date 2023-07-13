@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "sourceMap": true 
   },
-  "include": ["src/**/*.ts", ".eslintrc.js", "webpack.config.js"]
+  "include": ["src/**/*.ts", ".eslintrc.js", "webpack.config.js", "src/utils/custom.d.ts"]
 }

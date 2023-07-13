@@ -1,100 +1,82 @@
+import './styles/global.css';
 import './styles/race.css';
-import { Car } from './car/car';
+// import Car from './car/car';
 import createRace from './view/track';
+import Garage from './car/garage';
 
-const url = 'http://127.0.0.1:3000/garage';
+// const garageURL = 'http://127.0.0.1:3000/garage';
+// const engineURL = 'http://127.0.0.1:3000/engine';
 
-// get cars from server
+const garage = new Garage();
 
-const getCars = async (): Promise<Car[]> => {
-  const request = await fetch(url);
-  const output = await request.json();
-  return output;
-};
+// type Engine = {
+//   velocity: number;
+//   distance: number;
+// };
+
+// const animateDrive = (id: number, time: number): void => {
+//   const car = document.querySelector(`#c${id}`);
+//   if (car instanceof HTMLElement) {
+//     car.classList.add('drive');
+//     car.style.setProperty('--drive-time', `${time}s`);
+//   }
+// };
+
+// const startEngine = async (id: number): Promise<Engine> => {
+//   const status = 'started';
+//   const request = await fetch(`${engineURL}?id=${id}&status=${status}`, {
+//     method: 'PATCH',
+//   });
+//   const engine = await request.json();
+//   return engine;
+// };
+
+// const stopEngine = async (id: number): Promise<Engine> => {
+//   const status = 'stopped';
+//   const request = await fetch(`${engineURL}?id=${id}&status=${status}`, {
+//     method: 'PATCH',
+//   });
+//   const engine = await request.json();
+//   return engine;
+// };
+
+// const drive = async (id: number): Promise<void> => {
+//   const status = 'drive';
+//   const startTime = Date.now();
+//   const engine = await startEngine(id);
+//   console.log(`engine started with speed = ${engine.velocity}`);
+//   const time = Math.round(engine.distance / (engine.velocity * 10)) / 100;
+//   animateDrive(id, time);
+//   const trip = await fetch(`${engineURL}?id=${id}&status=${status}`, {
+//     method: 'PATCH',
+//   });
+//   console.log(trip);
+//   // const finish = await trip.json();
+//   // console.log(finish);
+//   const seconds = (Date.now() - startTime) / 1000;
+//   if (trip.ok) {
+//     console.log(`Car id=${id} stopped in ${seconds} seconds`);
+//   } else {
+//     const message = await trip.text();
+//     console.log(message);
+//   }
+//   await stopEngine(id);
+// };
+
+// drive(2);
 
 const body = document.querySelector('body');
 
-getCars().then((cars) => {
+// const newCar = new Car('Kia', '#4dff00');
+// console.log(`Created new car ${newCar.name} with id=${newCar.id}`);
+// newCar.updateCar('Kia Rio', '#ff0000');
+
+garage.cars.then((cars) => {
   console.log(cars);
   if (body) {
     body.innerHTML = '';
     body.append(createRace(cars));
   }
+}).then(() => {
+  garage.deleteCar(6);
 });
-
-// create car
-// const newCar = {
-//   name: 'Kia',
-//   color: '#4dff00',
-// };
-
-// const createCar = async (car: Car): Promise<void> => {
-//   const request = await fetch(url, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(car),
-//   });
-//   if (request.ok) {
-//     const addedCar = await request.json();
-//     console.log(addedCar);
-//   } else {
-//     console.log('Something went wrong!');
-//   }
-// };
-
-// createCar(newCar);
-
-// update car
-
-// const carToUpdate = {
-//   id: 6,
-//   name: 'Toyota',
-//   color: '#ff9b00',
-// };
-
-// const updateCar = async (car:Car): Promise<void> => {
-//   const request = await fetch(`${url}/${car.id}`, {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(car),
-//   });
-//   if (request.ok) {
-//     const updatedCar = await request.json();
-//     console.log('Car successfully updated with following data:');
-//     console.log(updatedCar);
-//   } else {
-//     console.log('Car update failure!');
-//   }
-// };
-
-// updateCar(carToUpdate);
-
-// delete car
-
-// const deleteCar = async (idToDel: number): Promise<void> => {
-//   try {
-//     const delResponse = await fetch(`${url}/${idToDel}`, {
-//       method: 'DELETE',
-//     });
-//     if (delResponse.ok) {
-//       console.log(`Car with id=${idToDel} deleted, and here are the rest:`);
-//       const res = await fetch(url);
-//       const out = await res.json();
-//       console.log(out);
-//     } else {
-//       console.log(`There's no car with id=${idToDel} to delete\n
-//       The only cars you have are:`);
-//       const res = await fetch(url);
-//       const out = await res.json();
-//       console.log(out);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// deleteCar(7);
