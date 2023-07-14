@@ -1,9 +1,3 @@
-// export type Car = {
-//   id?: number;
-//   name: string;
-//   color: string;
-// };
-
 export default class Car {
   public id;
 

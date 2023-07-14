@@ -50,7 +50,7 @@
   content: " ";
   position: absolute;
   z-index: 50;
-  right: 120px;
+  right: 100px;
   height: 100%;
   width: 10px;
   background: repeating-linear-gradient(
@@ -89,4 +89,16 @@
 .drive {
   left: calc(100% - 2rem - 65px);
   transition: left var(--drive-time) linear;
+  /* animation-name: drive;
+  animation-duration: var(--drive-time); */
 }
+
+/* @keyframes drive {
+  0% {
+    transform: translate(0)
+  }
+
+  100% {
+    transform: translate(600px)
+  }
+} */

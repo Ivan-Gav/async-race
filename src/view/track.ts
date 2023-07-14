@@ -1,6 +1,6 @@
 import Car from '../car/car';
 import carButtons from './car-buttons-view';
-import carSVG from '../car/car-svg';
+import carSVG from './car-svg';
 
 const createTrack = (auto: Car): HTMLElement => {
   const track = document.createElement('div');
@@ -12,6 +12,7 @@ const createTrack = (auto: Car): HTMLElement => {
   car.title = auto.name;
   let carImage = carSVG;
   carImage = carImage.replace('id="path2853" style="fill:#ffffff"', `id="path2853" style="fill:${auto.color}"`);
+  carImage = carImage.replace('<title id="title3968">Car - Top View</title>', `<title id="title3968">${auto.name}</title>`);
   car.innerHTML = carImage;
   // car.style.backgroundColor = auto.color;
 
@@ -20,7 +21,7 @@ const createTrack = (auto: Car): HTMLElement => {
   road.append(car);
 
   track.append(
-    carButtons(auto.name),
+    carButtons(auto),
     road,
   );
   return track;

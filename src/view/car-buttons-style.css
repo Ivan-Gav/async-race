@@ -7,6 +7,7 @@
   row-gap: 0.2rem;
   background: linear-gradient(to top, #393939, #696969, #393939);
   border-radius: 0.4rem;
+  user-select: none;
 }
 
 .car-button {
@@ -20,17 +21,25 @@
   border-radius: 0.4rem;
   outline: 0.1rem solid #727272;
   background: radial-gradient(ellipse, #696969, #393939);
-  color: #b0b0b0;
+  color: #cecece;
   cursor: pointer;
+  user-select: none;
 }
 
 .car-button:hover {
-  color: #d0d0d0;
+  color: #ededed;
 }
 
 .car-button:active {
-  color: #e8e29b;
+  color: #fff47a;
   outline: 0.1rem solid #303030;
+}
+
+.car-button.inactive {
+  color: #5e5e5e;
+  background: #393939;
+  cursor: unset;
+  pointer-events: none;
 }
 
 .car-buttons_title {

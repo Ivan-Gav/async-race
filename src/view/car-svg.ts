@@ -24,8 +24,7 @@ const carSVG = `
      gridtolerance="10"
      guidetolerance="10"
    />
-  <title
-     id="title3968">Car - Top View</title>
+  <title id="title3968">Car - Top View</title>
   <defs
      id="defs4">
     <linearGradient
