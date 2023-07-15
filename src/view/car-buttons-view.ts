@@ -1,4 +1,4 @@
-import './car-buttons-style.css';
+import '../styles/car-buttons-style.css';
 import Car from '../car/car';
 import { drive, stop } from '../car/drive';
 

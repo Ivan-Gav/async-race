@@ -1,6 +1,7 @@
 import Car from '../car/car';
 import carButtons from './car-buttons-view';
 import carSVG from './car-svg';
+import '../styles/race.css';
 
 const createTrack = (auto: Car): HTMLElement => {
   const track = document.createElement('div');
@@ -14,7 +15,6 @@ const createTrack = (auto: Car): HTMLElement => {
   carImage = carImage.replace('id="path2853" style="fill:#ffffff"', `id="path2853" style="fill:${auto.color}"`);
   carImage = carImage.replace('<title id="title3968">Car - Top View</title>', `<title id="title3968">${auto.name}</title>`);
   car.innerHTML = carImage;
-  // car.style.backgroundColor = auto.color;
 
   const road = document.createElement('div');
   road.className = 'road';
@@ -27,7 +27,7 @@ const createTrack = (auto: Car): HTMLElement => {
   return track;
 };
 
-const createRace = (carsArray: Car[]): HTMLElement => {
+const renderRace = (carsArray: Car[]): HTMLElement => {
   const race = document.createElement('div');
   race.className = 'race';
   carsArray.forEach((car) => {
@@ -36,4 +36,4 @@ const createRace = (carsArray: Car[]): HTMLElement => {
   return race;
 };
 
-export default createRace;
+export default renderRace;

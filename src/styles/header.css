@@ -1,0 +1,130 @@
+header {
+  --menu-bg-color: #393939;
+  --menu-color-1: #00003b;
+  --menu-color-2: #ffffff; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* background: var(--menu-bg-color); */
+  background: linear-gradient(to top, #393939, #696969, #393939);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  align-items: stretch;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  font-family: 'Racing Sans One', cursive;
+  text-transform: uppercase;
+}
+
+.navbar li {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 1rem;
+  width: 14rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+#race-menu-item {
+  width: 20rem;
+  font-size: 2.5rem;
+}
+
+.navbar li span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* color: var(--menu-color-1); */
+  background: #bdc3c7;
+  background: linear-gradient(to top, #acacac, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.navbar li:hover {
+  /* background-color: var(--menu-color-1); */
+  background: radial-gradient(ellipse, #bd3c00, #9f3200);;
+}
+
+.navbar li:hover span {
+  color: var(--menu-color-2);
+}
+
+.navbar li ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 14rem;
+  background: var(--menu-bg-color);
+  display: none;
+}
+
+.navbar li:focus-within > ul,
+.navbar li:hover > ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#menu-bar {
+  display: none;
+}
+
+label[for="menu-bar"] {
+  font-size: 1.5rem;
+  color: var(--menu-color-1);
+  padding: 1rem;
+  display: none;
+}
+
+/* @media(max-width: 900px) {
+
+  label[for="menu-bar"] {
+    display: initial;
+  }
+
+  .navbar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--menu-color-2);
+    display: none;
+  }
+
+  .navbar ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar li {
+    width: 100%;
+  }
+
+  .navbar li ul {
+    position: relative;
+    width: 100%;
+  }
+
+  #menu-bar:checked ~ .navbar {
+    display: initial;
+  }
+} */
