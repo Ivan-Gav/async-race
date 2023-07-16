@@ -1,6 +1,6 @@
 import '../styles/header.css';
 import createHtml from '../utils/createHtml';
-import renderModal from '../utils/modal';
+import { modal } from '../utils/modal';
 
 // const headerHtml = `
 // <nav class="navbar">
@@ -31,8 +31,8 @@ const goToWinners = ():void => {
 
 const renderHeader = ():HTMLElement => {
   const header = createHtml('header');
-  // header.innerHTML = headerHtml;
-  const carCreateModal = renderModal();
+  modal.setCreateCallback();
+  const carCreateModal = modal.renderModal('car-create-modal');
 
   const createCar = (): void => {
     console.log('Button Create Car pressed');
@@ -54,8 +54,7 @@ const renderHeader = ():HTMLElement => {
   nav.append(ulNavbar);
   header.append(nav);
 
-  const body = document.querySelector('body');
-  body?.append(carCreateModal);
+  header.append(carCreateModal);
 
   return header;
 };

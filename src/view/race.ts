@@ -9,7 +9,10 @@ const createTrack = (auto: Car): HTMLElement => {
 
   const car = document.createElement('div');
   car.className = 'car';
-  if (auto.id) car.id = `c${auto.id}`;
+  if (auto.id) {
+    car.id = `c${auto.id}`;
+    track.id = `t${auto.id}`;
+  }
   car.title = auto.name;
   let carImage = carSVG;
   carImage = carImage.replace('id="path2853" style="fill:#ffffff"', `id="path2853" style="fill:${auto.color}"`);

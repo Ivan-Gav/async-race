@@ -1,6 +1,6 @@
 import Car from './car';
 
-export default class Garage {
+class Garage {
   private garageURL = 'http://127.0.0.1:3000/garage';
 
   public cars;
@@ -22,7 +22,7 @@ export default class Garage {
     return car;
   }
 
-  private async createCar(name: string, color: string): Promise<void> {
+  public async createCar(name: string, color: string): Promise<void> {
     const car = {
       name,
       color,
@@ -81,3 +81,7 @@ export default class Garage {
     }
   }
 }
+
+const garage = new Garage();
+
+export default garage;

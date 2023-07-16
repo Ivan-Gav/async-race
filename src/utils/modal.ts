@@ -1,66 +1,117 @@
 import '../styles/modal.css';
 import createHtml from './createHtml';
 import carSVG from '../view/car-svg';
+import garage from '../car/garage';
 
-// const modalHtml = `
-// <h2>Create Car</h2>
-// <button class="button close-button">🗙</button>
-// <form id="edit-car" method="dialog">
-//   <label>Model <input type="text" v></label>
-//   <label>Color <input type="color"></label>
-//   <button class="button" type="submit">Create car</button>
-// </form>
-// `;
+class Modal {
+  public header;
 
-// const formHtml = `
-//   <input type="text" placeholder="Model" value="Mitsubishi EVO"'>
-//   <label>Color <input type="color" value="#ff0000"></label>
-//   <button class="button" type="submit">Create car</button>
-// `;
+  public carName;
 
-// const headerText = 'Create Car';
-// const carName = 'Mitsubishi EVO';
-// const carColor = '#ff0000';
+  public carColor;
 
-const renderModal = (header = 'Create Car', carName = 'Dodge Viper', carColor = '#ff0000'):HTMLDialogElement => {
-  const modal = createHtml('dialog', 'modal', 'car-edit-form') as HTMLDialogElement;
-  // modal.innerHTML = modalHtml;
+  public modalHeader;
 
-  const closeModal = ():void => {
-    modal.close();
-  };
+  public editForm;
 
-  const modalContainer = createHtml('div', 'modal-container');
-  const modalHeader = createHtml('h2', 'modal-header', undefined, header);
-  const closeBtn = createHtml('button', 'modal-close-btn', undefined, '🗙', closeModal);
-  const editForm = createHtml('form', undefined, 'edit-car');
+  public modelInput;
 
-  const modelInput = createHtml('input', undefined, 'model-input');
-  modelInput.setAttribute('type', 'text');
-  modelInput.setAttribute('value', carName);
-  const colorInput = createHtml('input', undefined, 'color-input');
-  colorInput.setAttribute('type', 'color');
-  colorInput.setAttribute('value', carColor);
+  public colorInput;
 
-  const submitBtn = createHtml('button', 'modal-submit-btn', undefined, 'Submit');
+  constructor(
+    header = 'Create Car',
+    carName = 'Zapor Legend',
+    carColor = '#ff0000',
+    carId = 0,
+  ) {
+    this.header = header;
+    this.carName = carName;
+    this.carColor = carColor;
+    this.modalHeader = createHtml('h2', 'modal-header', undefined, this.header);
+    this.modelInput = this.buildModelInput();
+    this.colorInput = this.buildColorInput();
+    this.editForm = this.buildForm(carId);
+  }
 
-  editForm.append(modelInput, colorInput, submitBtn);
+  public renderModal(modalId: string): HTMLDialogElement {
+    const modal = createHtml('dialog', 'modal', modalId) as HTMLDialogElement;
+    const closeModal = (): void => modal.close();
+    const modalContainer = createHtml('div', 'modal-container');
+    const closeBtn = createHtml(
+      'button',
+      'modal-close-btn',
+      undefined,
+      '🗙',
+      closeModal,
+    );
+    const carPic = carSVG.replace(
+      'id="path2853" style="fill:#ffffff"',
+      `id="path2853" style="fill:${this.carColor}"`,
+    );
+    const carImage = createHtml('div', 'carFormImg', undefined, carPic);
+    this.colorInput.addEventListener('input', () => {
+      const newColor = this.colorInput.value;
+      carImage.innerHTML = carImage.innerHTML.replace(
+        /id="path2853" style="fill:#\w*"/,
+        `id="path2853" style="fill:${newColor}"`,
+      );
+    });
+    modalContainer.append(this.modalHeader, closeBtn, this.editForm, carImage);
+    modal.append(modalContainer);
+    return modal;
+  }
 
-  const carPic = carSVG.replace('id="path2853" style="fill:#ffffff"', `id="path2853" style="fill:${carColor}"`);
+  public setCreateCallback(): void {
+    this.editForm.addEventListener('submit', () => {
+      garage.createCar(this.modelInput.value, this.colorInput.value);
+    });
+  }
 
-  const carImage = createHtml('div', 'carFormImg', undefined, carPic);
+  public setTuneCallback(): void {
+    this.editForm.addEventListener('submit', (event: Event) => {
+      const form = event.currentTarget;
+      if (form instanceof HTMLElement) {
+        const id = Number(form.id.replace('f', ''));
+        if (id) {
+          garage.updateCar(
+            id,
+            this.modelInput.value,
+            this.colorInput.value,
+          );
+        }
+      }
+    });
+  }
 
-  colorInput.addEventListener('input', () => {
-    if (colorInput instanceof HTMLInputElement) {
-      const newColor = colorInput.value;
-      carImage.innerHTML = carImage.innerHTML.replace(/id="path2853" style="fill:#\w*"/, `id="path2853" style="fill:${newColor}"`);
-    }
-  });
+  private buildModelInput(): HTMLInputElement {
+    const modelInput = createHtml('input', undefined, 'model-input');
+    modelInput.setAttribute('type', 'text');
+    modelInput.setAttribute('value', this.carName);
+    modelInput.setAttribute('maxlength', '18');
+    return modelInput as HTMLInputElement;
+  }
 
-  modalContainer.append(modalHeader, closeBtn, editForm, carImage);
-  modal.append(modalContainer);
+  private buildColorInput(): HTMLInputElement {
+    const colorInput = createHtml('input', undefined, 'color-input');
+    colorInput.setAttribute('type', 'color');
+    colorInput.setAttribute('value', this.carColor);
+    return colorInput as HTMLInputElement;
+  }
 
-  return modal;
-};
+  private buildForm(carId = 0): HTMLFormElement {
+    const editForm = createHtml('form', 'edit-car', `f${carId}`);
+    // editForm.setAttribute('method', 'dialog');
+    const submitBtn = createHtml(
+      'button',
+      'modal-submit-btn',
+      undefined,
+      'Submit',
+    );
+    editForm.append(this.modelInput, this.colorInput, submitBtn);
+    return editForm as HTMLFormElement;
+  }
+}
 
-export default renderModal;
+const modal = new Modal();
+
+export { modal, Modal };

@@ -1,6 +1,8 @@
 import '../styles/car-buttons-style.css';
 import Car from '../car/car';
 import { drive, stop } from '../car/drive';
+import garage from '../car/garage';
+import { Modal } from '../utils/modal';
 
 const tuneBtnText = 'Tune';
 const startBtnText = 'Start';
@@ -21,15 +23,37 @@ const button = (btnText: string, btnClass: string, car: Car, callback: Callback)
   return btn;
 };
 
-const tuneCallback = (event: Event): void => {
+const tuneCallback = async (event: Event): Promise<void> => {
   if (event.currentTarget instanceof HTMLElement) {
-    console.log('tune');
+    console.log('open tune modal');
+    const btn = event.currentTarget;
+    const id = Number(btn.dataset.carId);
+    if (id) {
+      const car = await garage.getCar(id);
+      const modal = new Modal('Edit Car', car.name, car.color, id);
+      modal.setTuneCallback();
+      const carEditModal = modal.renderModal('car-edit-modal');
+      const currentModal = document.querySelector('#car-edit-modal');
+      if (currentModal) {
+        currentModal.replaceWith(carEditModal);
+      } else {
+        const header = document.querySelector('header');
+        header?.append(carEditModal);
+      }
+      carEditModal.showModal();
+    }
   }
 };
 
-const removeCallback = (event: Event): void => {
+const removeCallback = async (event: Event): Promise<void> => {
   if (event.currentTarget instanceof HTMLElement) {
-    console.log('remove');
+    const btn = event.currentTarget;
+    const id = btn.dataset.carId;
+    if (id) {
+      await garage.deleteCar(Number(id));
+      const track = document.querySelector(`#t${id}`);
+      track?.remove();
+    }
   }
 };
 
@@ -50,8 +74,8 @@ const startCallback = async (event: Event): Promise<void> => {
 };
 
 const stopCallback = (event: Event): void => {
-  if (event.currentTarget instanceof HTMLElement) {
-    const btn = event.currentTarget;
+  const btn = event.currentTarget;
+  if (btn instanceof HTMLElement) {
     const id = btn.dataset.carId;
     if (id) {
       console.log('stop');
