@@ -1,4 +1,5 @@
-// import Car from './car';
+import Car from './car';
+import garage from './garage';
 
 const engineURL = 'http://127.0.0.1:3000/engine';
 
@@ -11,6 +12,8 @@ type RaceWinner = {
   id: number;
   time: number;
 };
+
+let carsStorage:Car[] = [];
 
 const animateDrive = (id: number, time: number): void => {
   const car = document.querySelector(`#c${id}`);
@@ -97,4 +100,60 @@ const drive = async (id: number): Promise<RaceWinner> => {
   return { id, time };
 };
 
-export { drive, stop, RaceWinner };
+const showFinishMessage = (winner?:RaceWinner):void => {
+  let message = '';
+  if (winner) {
+    const winnerName = carsStorage.find((car) => car.id === winner.id)?.name;
+    message = `The winner is ${winnerName} <br> with the result ${winner.time} seconds!`;
+  } else {
+    message = 'There is no winner - all the cars broke down!';
+  }
+  const messageBox = document.querySelector('#finish-message');
+  if (messageBox) {
+    messageBox.innerHTML = message;
+    messageBox.classList.add('show');
+  }
+};
+
+const resetRace = async (event:Event):Promise<void> => {
+  const raceBtn = event.currentTarget as HTMLElement;
+  raceBtn.classList.add('inactive');
+  carsStorage = await garage.cars;
+  const arrOfCars:Promise<void>[] = [];
+  carsStorage.forEach(async (car) => {
+    arrOfCars.push(stop(car.id));
+  });
+  await Promise.all(arrOfCars);
+  raceBtn.classList.remove('inactive');
+  raceBtn.innerHTML = '<span>Start Race</span>';
+  raceBtn.removeEventListener('click', resetRace);
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  raceBtn.addEventListener('click', startRace);
+  const messageBox = document.querySelector('#finish-message');
+  if (messageBox) {
+    messageBox.classList.remove('show');
+  }
+};
+
+async function startRace(event:Event):Promise<void> {
+  const raceBtn = event.currentTarget as HTMLElement;
+  raceBtn.classList.add('inactive');
+  carsStorage = await garage.cars;
+  const arrOfDrivingCars:Promise<RaceWinner>[] = [];
+  carsStorage.forEach(async (car) => {
+    arrOfDrivingCars.push(drive(car.id));
+  });
+  try {
+    const winner = await Promise.any(arrOfDrivingCars);
+    showFinishMessage(winner);
+  } catch (error) {
+    showFinishMessage();
+  }
+
+  raceBtn.classList.remove('inactive');
+  raceBtn.innerHTML = '<span>Reset Race</span>';
+  raceBtn.removeEventListener('click', startRace);
+  raceBtn.addEventListener('click', resetRace);
+}
+
+export { startRace, drive, stop };
