@@ -62,9 +62,18 @@ header {
   background: radial-gradient(ellipse, #bd3c00, #9f3200);;
 }
 
-.navbar li:hover span {
-  color: var(--menu-color-2);
+.navbar li.inactive {
+ cursor: unset;
+ pointer-events: none;
 }
+
+.navbar li.inactive span {
+  background: none;
+  background-clip: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: #828282;
+ }
 
 .navbar li ul {
   position: absolute;
@@ -83,7 +92,7 @@ header {
   align-items: flex-start;
 }
 
-#menu-bar {
+/* #menu-bar {
   display: none;
 }
 
@@ -92,4 +101,4 @@ label[for="menu-bar"] {
   color: var(--menu-color-1);
   padding: 1rem;
   display: none;
-}
+} */

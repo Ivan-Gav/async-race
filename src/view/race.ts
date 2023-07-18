@@ -2,13 +2,12 @@ import Car from '../car/car';
 import carButtons from './car-buttons-view';
 import carSVG from './car-svg';
 import '../styles/race.css';
+import createHtml from '../utils/createHtml';
 
 const createTrack = (auto: Car): HTMLElement => {
-  const track = document.createElement('div');
-  track.className = 'track';
+  const track = createHtml('div', 'track');
 
-  const car = document.createElement('div');
-  car.className = 'car';
+  const car = createHtml('div', 'car');
   if (auto.id) {
     car.id = `c${auto.id}`;
     track.id = `t${auto.id}`;
@@ -19,8 +18,7 @@ const createTrack = (auto: Car): HTMLElement => {
   carImage = carImage.replace('<title id="title3968">Car - Top View</title>', `<title id="title3968">${auto.name}</title>`);
   car.innerHTML = carImage;
 
-  const road = document.createElement('div');
-  road.className = 'road';
+  const road = createHtml('div', 'road');
   road.append(car);
 
   track.append(
@@ -31,11 +29,11 @@ const createTrack = (auto: Car): HTMLElement => {
 };
 
 const renderRace = (carsArray: Car[]): HTMLElement => {
-  const race = document.createElement('div');
-  race.className = 'race';
+  const race = createHtml('div', 'race');
   carsArray.forEach((car) => {
     race.append(createTrack(car));
   });
+  race.append(createHtml('div', undefined, 'finish-message'));
   return race;
 };
 

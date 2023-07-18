@@ -7,6 +7,11 @@ type Engine = {
   distance: number;
 };
 
+type RaceWinner = {
+  id: number;
+  time: number;
+};
+
 const animateDrive = (id: number, time: number): void => {
   const car = document.querySelector(`#c${id}`);
   if (car instanceof HTMLElement) {
@@ -15,7 +20,7 @@ const animateDrive = (id: number, time: number): void => {
   }
 };
 
-const stopDrivingAnimation = (id:number):void => {
+const stopDrivingAnimation = (id: number): void => {
   const car = document.querySelector(`#c${id}`);
   if (car instanceof HTMLElement) {
     const computedStyle = window.getComputedStyle(car);
@@ -25,7 +30,21 @@ const stopDrivingAnimation = (id:number):void => {
   }
 };
 
-const resetCarView = (id:number):void => {
+const setCarButtonsForDrive = (id: number): void => {
+  const startBtn = document.querySelector(`#Start-${id}`);
+  const resetBtn = document.querySelector(`#Reset-${id}`);
+  startBtn?.classList.add('inactive');
+  resetBtn?.classList.remove('inactive');
+};
+
+const resetCarButtons = (id: number): void => {
+  const startBtn = document.querySelector(`#Start-${id}`);
+  const resetBtn = document.querySelector(`#Reset-${id}`);
+  startBtn?.classList.remove('inactive');
+  resetBtn?.classList.add('inactive');
+};
+
+const resetCarView = (id: number): void => {
   const car = document.querySelector(`#c${id}`);
   if (car instanceof HTMLElement) {
     car.classList.remove('drive');
@@ -51,30 +70,31 @@ const stopEngine = async (id: number): Promise<Engine> => {
   return engine;
 };
 
-const drive = async (id: number): Promise<void> => {
+const stop = async (id: number): Promise<void> => {
+  await stopEngine(id);
+  resetCarView(id);
+  resetCarButtons(id);
+};
+
+const drive = async (id: number): Promise<RaceWinner> => {
   const status = 'drive';
-  const startTime = Date.now();
   const engine = await startEngine(id);
-  console.log(`engine started with speed = ${engine.velocity}`);
+  console.log(`engine ${id} started with speed = ${engine.velocity}`);
   const time = Math.round(engine.distance / (engine.velocity * 10)) / 100;
+  setCarButtonsForDrive(id);
   animateDrive(id, time);
   const trip = await fetch(`${engineURL}?id=${id}&status=${status}`, {
     method: 'PATCH',
   });
   console.log(trip);
-  const seconds = (Date.now() - startTime) / 1000;
-  if (trip.ok) {
-    console.log(`Car id=${id} stopped in ${seconds} seconds`);
-  } else {
+  if (!trip.ok) {
     const message = await trip.text();
     console.log(message);
     stopDrivingAnimation(id);
+    throw new Error(message);
   }
+  console.log(`Car id=${id} stopped in ${time} seconds`);
+  return { id, time };
 };
 
-const stop = async (id: number):Promise<void> => {
-  await stopEngine(id);
-  resetCarView(id);
-};
-
-export { drive, stop };
+export { drive, stop, RaceWinner };

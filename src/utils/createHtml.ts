@@ -1,4 +1,4 @@
-type Callback = (event?: Event) => void;
+type Callback = (event: Event) => void;
 
 const createHtml = (
   tag: string,

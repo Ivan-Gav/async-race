@@ -13,7 +13,12 @@ const classNameInactive = 'car-button inactive';
 
 type Callback = (event: Event) => void;
 
-const button = (btnText: string, btnClass: string, car: Car, callback: Callback): HTMLElement => {
+const button = (
+  btnText: string,
+  btnClass: string,
+  car: Car,
+  callback: Callback,
+): HTMLElement => {
   const btn = document.createElement('button');
   btn.textContent = btnText;
   btn.className = btnClass;
@@ -63,12 +68,16 @@ const startCallback = async (event: Event): Promise<void> => {
     const id = btn.dataset.carId;
     if (id) {
       console.log(`start car id=${id}`);
-      btn.classList.add('inactive');
-      const stopBtn = document.querySelector(`#${stopBtnText}-${id}`);
-      if (stopBtn) {
-        stopBtn.classList.remove('inactive');
+      // btn.classList.add('inactive');
+      // const stopBtn = document.querySelector(`#${stopBtnText}-${id}`);
+      // if (stopBtn) {
+      //   stopBtn.classList.remove('inactive');
+      // }
+      try {
+        await drive(Number(id));
+      } catch (error) {
+        console.log(`car id=${id} broke down`);
       }
-      await drive(Number(id));
     }
   }
 };
@@ -80,12 +89,12 @@ const stopCallback = (event: Event): void => {
     if (id) {
       console.log('stop');
       stop(Number(id));
-      btn.classList.add('inactive');
-      const startBtn = document.querySelector(`#${startBtnText}-${id}`);
-      if (startBtn) {
-        // startBtn.addEventListener('click', startCallback);
-        startBtn.classList.remove('inactive');
-      }
+      // btn.classList.add('inactive');
+      // const startBtn = document.querySelector(`#${startBtnText}-${id}`);
+      // if (startBtn) {
+      // startBtn.addEventListener('click', startCallback);
+      // startBtn.classList.remove('inactive');
+      // }
     }
   }
 };
