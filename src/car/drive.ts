@@ -36,15 +36,24 @@ const stopDrivingAnimation = (id: number): void => {
 const setCarButtonsForDrive = (id: number): void => {
   const startBtn = document.querySelector(`#Start-${id}`);
   const resetBtn = document.querySelector(`#Reset-${id}`);
+  const raceBtn = document.querySelector('#race-menu-item');
   startBtn?.classList.add('inactive');
+  raceBtn?.classList.add('inactive');
   resetBtn?.classList.remove('inactive');
 };
 
 const resetCarButtons = (id: number): void => {
   const startBtn = document.querySelector(`#Start-${id}`);
   const resetBtn = document.querySelector(`#Reset-${id}`);
+  const raceBtn = document.querySelector('#race-menu-item');
   startBtn?.classList.remove('inactive');
   resetBtn?.classList.add('inactive');
+  const startButtons = document.querySelectorAll('[id^="Start"]');
+  let allCarsSteady = true;
+  startButtons.forEach((button) => {
+    if (button.classList.contains('inactive')) allCarsSteady = false;
+  });
+  if (allCarsSteady) raceBtn?.classList.remove('inactive');
 };
 
 const resetCarView = (id: number): void => {
