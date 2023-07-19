@@ -2,9 +2,11 @@ import '../styles/header.css';
 import createHtml from '../utils/createHtml';
 import { modal } from '../utils/modal';
 import { startRace } from '../car/drive';
+import generateCars from '../car/generate-cars';
 
-const generateCars = ():void => {
+const generate = ():void => {
   console.log('Button Generate Cars pressed');
+  generateCars();
 };
 
 const goToWinners = ():void => {
@@ -25,7 +27,7 @@ const renderHeader = ():HTMLElement => {
   const garageMenuItem = createHtml('li', undefined, 'garage-menu-item', '<span>Garage</span>');
   const ulGarage = createHtml('ul');
   const createCarMenuItem = createHtml('li', 'menu-item_nested', 'create-car-item', '<span>Create Car</span>', createCar);
-  const generateCarsMenuItem = createHtml('li', 'menu-item_nested', 'generate-cars-item', '<span>Generate Cars</span>', generateCars);
+  const generateCarsMenuItem = createHtml('li', 'menu-item_nested', 'generate-cars-item', '<span>Generate Cars</span>', generate);
   const raceMenuItem = createHtml('li', undefined, 'race-menu-item', '<span>Start Race</span>', startRace);
   const winnersMenuItem = createHtml('li', undefined, 'winners-menu-item', '<span>Hall of Fame</span>', goToWinners);
 
