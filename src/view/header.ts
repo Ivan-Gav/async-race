@@ -1,8 +1,10 @@
 import '../styles/header.css';
-import createHtml from '../utils/createHtml';
+import createHtml from '../utils/create-html';
 import { modal } from '../utils/modal';
 import { startRace } from '../car/drive';
 import generateCars from '../car/generate-cars';
+import state from '../state/state';
+import garage from '../car/garage';
 
 const generate = ():void => {
   console.log('Button Generate Cars pressed');
@@ -38,6 +40,17 @@ const renderHeader = ():HTMLElement => {
   header.append(nav);
 
   header.append(carCreateModal);
+
+  const checkOneCarProblem = async ():Promise<void> => {
+    const response = await garage.getCars(state.page);
+    if (response.cars.length === 1) {
+      raceMenuItem.classList.add('inactive');
+    } else {
+      raceMenuItem.classList.remove('inactive');
+    }
+  };
+
+  document.addEventListener('turn-the-page', checkOneCarProblem);
 
   return header;
 };

@@ -80,6 +80,7 @@ header {
   top: 100%;
   left: 0;
   width: 14rem;
+  padding: 0;
   background: var(--menu-bg-color);
   display: none;
 }
@@ -91,14 +92,3 @@ header {
   justify-content: space-between;
   align-items: flex-start;
 }
-
-/* #menu-bar {
-  display: none;
-}
-
-label[for="menu-bar"] {
-  font-size: 1.5rem;
-  color: var(--menu-color-1);
-  padding: 1rem;
-  display: none;
-} */

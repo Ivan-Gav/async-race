@@ -6,7 +6,8 @@ const body = document.querySelector('body');
 
 if (body) {
   body.innerHTML = '';
+  body.append(renderHeader());
   renderMain().then((main) => {
-    body.append(renderHeader(), main);
+    body.append(main);
   });
 }

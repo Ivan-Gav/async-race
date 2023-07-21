@@ -3,6 +3,7 @@ import Car from '../car/car';
 import { drive, stop } from '../car/drive';
 import garage from '../car/garage';
 import { Modal } from '../utils/modal';
+import createHtml from '../utils/create-html';
 
 const tuneBtnText = 'Tune';
 const startBtnText = 'Start';
@@ -19,12 +20,8 @@ const button = (
   car: Car,
   callback: Callback,
 ): HTMLElement => {
-  const btn = document.createElement('button');
-  btn.textContent = btnText;
-  btn.className = btnClass;
-  btn.id = `${btnText}-${car.id}`;
+  const btn = createHtml('button', btnClass, `${btnText}-${car.id}`, btnText, callback);
   btn.setAttribute('data-car-id', `${car.id}`);
-  btn.addEventListener('click', callback);
   return btn;
 };
 
@@ -56,8 +53,7 @@ const removeCallback = async (event: Event): Promise<void> => {
     const id = btn.dataset.carId;
     if (id) {
       await garage.deleteCar(Number(id));
-      const track = document.querySelector(`#t${id}`);
-      track?.remove();
+      // window.location.reload();
     }
   }
 };

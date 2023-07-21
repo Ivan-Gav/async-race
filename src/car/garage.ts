@@ -3,16 +3,11 @@ import Car from './car';
 class Garage {
   private garageURL = 'http://127.0.0.1:3000/garage';
 
-  public cars;
-
-  constructor() {
-    this.cars = this.getCars();
-  }
-
-  private async getCars(): Promise<Car[]> {
-    const request = await fetch(this.garageURL);
-    const output = await request.json();
-    return output;
+  public async getCars(page = 1, limit = 7): Promise<{ total:number, cars:Car[] }> {
+    const request = await fetch(`${this.garageURL}?_page=${page}&_limit=${limit}`);
+    const cars = await request.json();
+    const total = Number(request.headers.get('X-Total-Count'));
+    return { total, cars };
   }
 
   public async getCar(id: number): Promise<Car> {
@@ -47,6 +42,7 @@ class Garage {
         console.log(`Car with id=${id} deleted, and here are the rest:`);
         const res = await fetch(this.garageURL);
         const out = await res.json();
+        document.dispatchEvent(new CustomEvent('turn-the-page'));
         console.log(out);
       } else {
         console.log(`There's no car with id=${id} to delete\n

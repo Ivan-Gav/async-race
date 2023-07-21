@@ -1,3 +1,6 @@
+
+
+
 .race {
   position: relative;
   display: flex;
@@ -12,32 +15,16 @@
 .track {
   display: flex;
   align-items: center;
-  border-top: solid 0.2rem black;
+  border-bottom: solid 0.2rem black;
   background: lightslategray;
   background-image: url("../assets/images/asphalt.jpg");
   padding: 0 2rem;
-  height: 100px;
+  height: 9rem;
 }
 
-.track:last-child {
-  border-bottom: solid 0.2rem black;
+.track:first-child {
+  border-top: solid 0.2rem black;
 }
-
-/* .track::after {
-  content: " ";
-  position: absolute;
-  z-index: 50;
-  right: 120px;
-  height: 100%;
-  width: 10px;
-  background: repeating-linear-gradient(
-  -45deg,
-  black,
-  black 5px,
-  yellow 5px,
-  yellow 10px
-) fixed;
-} */
 
 .road {
   position: relative;
@@ -106,11 +93,19 @@
   font-size: 4rem;
   text-shadow: none;
   background: none;
+  border: none;
   z-index: -100;
   backdrop-filter: none;
   color: transparent;
   transition: all 0.3s;
+  --car-color: #ff5100;
 }
+
+#finish-message span {
+  display: contents;
+  color: var(--car-color);
+}
+
 
 #finish-message.show {
   z-index: 100;
@@ -131,4 +126,5 @@
   backdrop-filter: blur(0.15rem) grayscale(75%);
   transition: all 0.3s;
 }
+
 

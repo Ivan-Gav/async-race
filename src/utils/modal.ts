@@ -1,6 +1,6 @@
 import '../styles/modal.css';
-import createHtml from './createHtml';
-import carSVG from '../view/car-svg';
+import createHtml from './create-html';
+import carSVG from '../assets/images/car-svg';
 import garage from '../car/garage';
 
 class Modal {

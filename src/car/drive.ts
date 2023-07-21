@@ -1,3 +1,4 @@
+import state from '../state/state';
 import Car from './car';
 import garage from './garage';
 
@@ -111,15 +112,20 @@ const drive = async (id: number): Promise<RaceWinner> => {
 
 const showFinishMessage = (winner?:RaceWinner):void => {
   let message = '';
+  let carColor = '#ff5100';
   if (winner) {
-    const winnerName = carsStorage.find((car) => car.id === winner.id)?.name;
-    message = `The winner is ${winnerName} <br> with the result ${winner.time} seconds!`;
+    const winnerCar = carsStorage.find((car) => car.id === winner.id);
+    if (winnerCar) {
+      message = `The winner is&nbsp;&nbsp;&nbsp;<span>${winnerCar.name}</span><br> with the result&nbsp;&nbsp;&nbsp;<span>${winner.time}</span>&nbsp;&nbsp;&nbsp;seconds!`;
+      carColor = winnerCar.color;
+    }
   } else {
     message = 'There is no winner - all the cars broke down!';
   }
   const messageBox = document.querySelector('#finish-message');
-  if (messageBox) {
+  if (messageBox instanceof HTMLElement) {
     messageBox.innerHTML = message;
+    messageBox.style.setProperty('--car-color', carColor);
     messageBox.classList.add('show');
   }
 };
@@ -127,7 +133,8 @@ const showFinishMessage = (winner?:RaceWinner):void => {
 const resetRace = async (event:Event):Promise<void> => {
   const raceBtn = event.currentTarget as HTMLElement;
   raceBtn.classList.add('inactive');
-  carsStorage = await garage.cars;
+  const response = await garage.getCars(state.page);
+  carsStorage = response.cars;
   const arrOfCars:Promise<void>[] = [];
   carsStorage.forEach(async (car) => {
     arrOfCars.push(stop(car.id));
@@ -147,7 +154,8 @@ const resetRace = async (event:Event):Promise<void> => {
 async function startRace(event:Event):Promise<void> {
   const raceBtn = event.currentTarget as HTMLElement;
   raceBtn.classList.add('inactive');
-  carsStorage = await garage.cars;
+  const response = await garage.getCars(state.page);
+  carsStorage = response.cars;
   const arrOfDrivingCars:Promise<RaceWinner>[] = [];
   carsStorage.forEach(async (car) => {
     arrOfDrivingCars.push(drive(car.id));

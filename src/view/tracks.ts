@@ -1,8 +1,8 @@
 import Car from '../car/car';
 import carButtons from './car-buttons-view';
-import carSVG from './car-svg';
-import '../styles/race.css';
-import createHtml from '../utils/createHtml';
+import carSVG from '../assets/images/car-svg';
+import '../styles/tracks.css';
+import createHtml from '../utils/create-html';
 
 const createTrack = (auto: Car): HTMLElement => {
   const track = createHtml('div', 'track');
@@ -28,8 +28,8 @@ const createTrack = (auto: Car): HTMLElement => {
   return track;
 };
 
-const renderRace = (carsArray: Car[]): HTMLElement => {
-  const race = createHtml('div', 'race');
+const renderTracks = (carsArray: Car[]): HTMLElement => {
+  const race = createHtml('section', 'race');
   carsArray.forEach((car) => {
     race.append(createTrack(car));
   });
@@ -37,4 +37,4 @@ const renderRace = (carsArray: Car[]): HTMLElement => {
   return race;
 };
 
-export default renderRace;
+export default renderTracks;

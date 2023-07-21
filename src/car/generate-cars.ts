@@ -24,7 +24,7 @@ const generateCarName = ():string => {
   return `${carBrands[i].brand} ${carBrands[i].models[j]}`;
 };
 
-const generateCars = async (qty = 100):Promise<void> => {
+const generateCars = async (qty = 20):Promise<void> => {
   const set = new Set<string>();
   while (set.size < qty) {
     set.add(generateCarName());

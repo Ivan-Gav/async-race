@@ -1,11 +1,15 @@
 import '../styles/main.css';
-import renderRace from './race';
-import garage from '../car/garage';
+import renderGarage from './garage-view';
 
 const renderMain = async (): Promise<HTMLElement> => {
   const main = document.createElement('main');
-  const cars = await garage.cars;
-  main.append(renderRace(cars));
+  let content = await renderGarage();
+  main.append(content);
+  document.addEventListener('turn-the-page', async () => {
+    main.innerHTML = '';
+    content = await renderGarage();
+    main.append(content);
+  });
   return main;
 };
 
