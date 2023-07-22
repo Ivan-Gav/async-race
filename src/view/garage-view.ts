@@ -12,7 +12,7 @@ const renderGarage = async (): Promise<DocumentFragment> => {
     response = await garage.getCars(state.page);
   }
   garageView.append(
-    renderGarageHeader(response.total),
+    renderGarageHeader(response.total, state.page),
     renderTracks(response.cars),
   );
   if (response.total > 7) {

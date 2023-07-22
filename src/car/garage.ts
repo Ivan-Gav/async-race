@@ -4,15 +4,15 @@ class Garage {
   private garageURL = 'http://127.0.0.1:3000/garage';
 
   public async getCars(page = 1, limit = 7): Promise<{ total:number, cars:Car[] }> {
-    const request = await fetch(`${this.garageURL}?_page=${page}&_limit=${limit}`);
-    const cars = await request.json();
-    const total = Number(request.headers.get('X-Total-Count'));
+    const response = await fetch(`${this.garageURL}?_page=${page}&_limit=${limit}`);
+    const cars = await response.json();
+    const total = Number(response.headers.get('X-Total-Count'));
     return { total, cars };
   }
 
   public async getCar(id: number): Promise<Car> {
-    const request = await fetch(`${this.garageURL}/${id}`);
-    const result = await request.json();
+    const response = await fetch(`${this.garageURL}/${id}`);
+    const result = await response.json();
     const car = Object.assign(result, Car);
     return car;
   }
@@ -22,14 +22,14 @@ class Garage {
       name,
       color,
     };
-    const request = await fetch(this.garageURL, {
+    const response = await fetch(this.garageURL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(car),
     });
-    const addedCar = await request.json();
+    const addedCar = await response.json();
     console.log(addedCar);
   }
 
@@ -61,15 +61,15 @@ class Garage {
       name,
       color,
     };
-    const request = await fetch(`${this.garageURL}/${id}`, {
+    const response = await fetch(`${this.garageURL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(car),
     });
-    if (request.ok) {
-      const updatedCar = await request.json();
+    if (response.ok) {
+      const updatedCar = await response.json();
       console.log('Car successfully updated with following data:');
       console.log(updatedCar);
     } else {

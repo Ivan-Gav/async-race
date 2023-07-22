@@ -85,10 +85,15 @@ header {
   display: none;
 }
 
-.navbar li:focus-within > ul,
-.navbar li:hover > ul {
+.navbar li.selected:focus-within > ul,
+.navbar li.selected:hover > ul {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.selected > span {
+  border-top: 0.4rem solid transparent;
+  border-bottom: 0.4rem solid #fff47a;
 }

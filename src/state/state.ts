@@ -1,13 +1,20 @@
 import garage from '../car/garage';
+import View from './view-type';
 
 class State {
   private currentPage;
 
+  public currentView;
+
   public numOfPages;
+
+  public isRace;
 
   constructor() {
     this.currentPage = 1;
     this.numOfPages = 1;
+    this.currentView = View.GARAGE;
+    this.isRace = false;
   }
 
   public async getNumOfPages():Promise<number> {

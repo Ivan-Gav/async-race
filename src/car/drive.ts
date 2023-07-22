@@ -133,6 +133,7 @@ const showFinishMessage = (winner?:RaceWinner):void => {
 const resetRace = async (event:Event):Promise<void> => {
   const raceBtn = event.currentTarget as HTMLElement;
   raceBtn.classList.add('inactive');
+  state.isRace = false;
   const response = await garage.getCars(state.page);
   carsStorage = response.cars;
   const arrOfCars:Promise<void>[] = [];
@@ -154,6 +155,7 @@ const resetRace = async (event:Event):Promise<void> => {
 async function startRace(event:Event):Promise<void> {
   const raceBtn = event.currentTarget as HTMLElement;
   raceBtn.classList.add('inactive');
+  state.isRace = true;
   const response = await garage.getCars(state.page);
   carsStorage = response.cars;
   const arrOfDrivingCars:Promise<RaceWinner>[] = [];
@@ -171,6 +173,13 @@ async function startRace(event:Event):Promise<void> {
   raceBtn.innerHTML = '<span>Reset Race</span>';
   raceBtn.removeEventListener('click', startRace);
   raceBtn.addEventListener('click', resetRace);
+
+  try {
+    await Promise.all(arrOfDrivingCars);
+    state.isRace = false;
+  } catch (error) {
+    // do nothing
+  }
 }
 
 export { startRace, drive, stop };
