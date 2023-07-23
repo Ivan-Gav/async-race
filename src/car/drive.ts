@@ -1,6 +1,7 @@
 import state from '../state/state';
 import Car from './car';
 import garage from './garage';
+import winners from '../winners/winners';
 
 const engineURL = 'http://127.0.0.1:3000/engine';
 
@@ -165,6 +166,7 @@ async function startRace(event:Event):Promise<void> {
   try {
     const winner = await Promise.any(arrOfDrivingCars);
     showFinishMessage(winner);
+    winners.addWinner(winner.id, winner.time);
   } catch (error) {
     showFinishMessage();
   }

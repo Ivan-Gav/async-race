@@ -17,39 +17,39 @@ class Winners {
 
   public async getWinner(id: number): Promise<Winner> {
     const response = await fetch(`${this.winnersURL}/${id}`);
+    if (!response.ok) throw new Error(`Car id=${id} not found in the Winners list.`);
     const result = await response.json();
     const winner = result as Winner;
     return winner;
   }
 
-  public async createWinner(id: number, time: number, wins = 1): Promise<void> {
+  private async createWinner(id: number, time: number, wins = 1): Promise<void> {
     const winner = {
       id,
       wins,
       time,
     };
-    const response = await fetch(this.winnersURL, {
+    await fetch(this.winnersURL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(winner),
     });
-    const addedWinner = await response.json();
-    console.log(addedWinner);
   }
 
   public async deleteWinner(id: number): Promise<void> {
     try {
-      await fetch(`${this.winnersURL}/${id}`, {
+      const response = await fetch(`${this.winnersURL}/${id}`, {
         method: 'DELETE',
       });
+      if (!response.ok) throw new Error(`Can't delete car with id=${id} from the Winners list.`);
     } catch (error) {
       console.log(error);
     }
   }
 
-  public async updateWinner(id: number, time: number, wins: number): Promise<void> {
+  private async updateWinner(id: number, time: number, wins: number): Promise<void> {
     const winner = {
       id,
       wins,
@@ -67,6 +67,7 @@ class Winners {
   public async addWinner(id:number, time:number):Promise<void> {
     try {
       const winnerRecord = await this.getWinner(id);
+      console.log(winnerRecord);
       let newTime = winnerRecord.time;
       if (time < winnerRecord.time) newTime = time;
       this.updateWinner(id, newTime, (winnerRecord.wins + 1));

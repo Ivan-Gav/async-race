@@ -1,0 +1,79 @@
+.winners-header {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.winners-header::first-line {
+  font-size: 2rem;
+}
+
+.winners-table {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr 2fr 2fr;
+  grid-template-rows: auto;
+  grid-auto-rows: auto;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 1.7rem;
+  justify-content: stretch;
+  align-items: center;
+  text-align: center;
+}
+
+.winners-table > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+#tab-head-car {
+  grid-column-end: span 2;
+}
+
+.winner-table-header {
+  height: 100%;
+  font-weight: 700;
+  border: solid 0.1rem black;
+  border-right: none;
+  background-color: grey;
+}
+
+.winner-table-header:last-child {
+  border-right: solid 0.1rem black;
+}
+
+.winner-table-nr,
+.winner-table-img,
+.winner-table-model,
+.winner-table-wins,
+.winner-table-time {
+  height: 100%;
+  border: solid 0.1rem black;
+  border-right: none;
+  border-top: none;
+}
+
+.winner-table-model {
+  border-left: none;
+}
+
+.winner-table-time {
+  border-right: solid 0.1rem black;
+}  
+.winner-table-img svg {
+  height: 3rem;
+}
+
+.winner-table-model {
+  justify-content: flex-start;
+  font-family: 'Racing Sans One', cursive;
+  background: #bdc3c7;
+  background: linear-gradient(to top, #393939, #696969);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

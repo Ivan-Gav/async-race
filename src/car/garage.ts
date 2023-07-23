@@ -1,10 +1,18 @@
 import Car from './car';
+import winners from '../winners/winners';
 
 class Garage {
   private garageURL = 'http://127.0.0.1:3000/garage';
 
   public async getCars(page = 1, limit = 7): Promise<{ total:number, cars:Car[] }> {
     const response = await fetch(`${this.garageURL}?_page=${page}&_limit=${limit}`);
+    const cars = await response.json();
+    const total = Number(response.headers.get('X-Total-Count'));
+    return { total, cars };
+  }
+
+  public async getAllCars(): Promise<{ total:number, cars:Car[] }> {
+    const response = await fetch(this.garageURL);
     const cars = await response.json();
     const total = Number(response.headers.get('X-Total-Count'));
     return { total, cars };
@@ -39,17 +47,8 @@ class Garage {
         method: 'DELETE',
       });
       if (delResponse.ok) {
-        console.log(`Car with id=${id} deleted, and here are the rest:`);
-        const res = await fetch(this.garageURL);
-        const out = await res.json();
+        await winners.deleteWinner(id);
         document.dispatchEvent(new CustomEvent('turn-the-page'));
-        console.log(out);
-      } else {
-        console.log(`There's no car with id=${id} to delete\n
-      The only cars you have are:`);
-        const res = await fetch(this.garageURL);
-        const out = await res.json();
-        console.log(out);
       }
     } catch (error) {
       console.log(error);

@@ -182,7 +182,7 @@ class Header {
 
     header.append(carCreateModal);
 
-    document.addEventListener('turn-the-page', this.checkOneCarProblem);
+    document.addEventListener('turn-the-page', () => this.checkOneCarProblem);
 
     return header;
   }
@@ -203,7 +203,6 @@ class Header {
       this.raceMenuItem.classList.add('inactive');
       state.currentView = View.WINNERS;
       document.dispatchEvent(new CustomEvent('change-view'));
-      console.log('Change view to WINNERS');
     }
   }
 
@@ -214,7 +213,6 @@ class Header {
       if (!state.isRace) this.raceMenuItem.classList.remove('inactive');
       state.currentView = View.GARAGE;
       document.dispatchEvent(new CustomEvent('change-view'));
-      console.log('Change view to GARAGE');
     }
   }
 }

@@ -8,34 +8,63 @@ const prevText = singleArrow;
 const nextText = singleArrow;
 const lastText = doubleArrow;
 
+enum PageProp {
+  page = 'page',
+  winnersPage = 'winnersPage',
+}
+
+const getPageProp = ():PageProp => {
+  if (state.currentView === 'GARAGE') {
+    return PageProp.page;
+  }
+  return PageProp.winnersPage;
+};
+
+const getEventProp = ():string => {
+  if (state.currentView === 'GARAGE') {
+    return 'turn-the-page';
+  }
+  return 'turn-winners-page';
+};
+
+const getNumberOfPages = async ():Promise<number> => {
+  if (state.currentView === 'GARAGE') {
+    return state.getNumOfPages();
+  }
+  return state.getNumOfWinPages();
+};
+
 const firstCallback = ():void => {
-  if (state.page !== 1) {
-    state.page = 1;
-    document.dispatchEvent(new CustomEvent('turn-the-page'));
+  const pageProp = getPageProp();
+  if (state[pageProp] !== 1) {
+    state[pageProp] = 1;
+    document.dispatchEvent(new CustomEvent(getEventProp()));
   }
 };
 
 const prevCallback = ():void => {
-  if (state.page > 1) {
-    state.page -= 1;
-    document.dispatchEvent(new CustomEvent('turn-the-page'));
+  const pageProp = getPageProp();
+  if (state[pageProp] > 1) {
+    state[pageProp] -= 1;
+    document.dispatchEvent(new CustomEvent(getEventProp()));
   }
 };
 
 const nextCallback = async ():Promise<void> => {
-  const totalPages = await state.getNumOfPages();
-  if (state.page < totalPages) {
-    state.page += 1;
-    document.dispatchEvent(new CustomEvent('turn-the-page'));
+  const pageProp = getPageProp();
+  const totalPages = await getNumberOfPages();
+  if (state[pageProp] < totalPages) {
+    state[pageProp] += 1;
+    document.dispatchEvent(new CustomEvent(getEventProp()));
   }
 };
 
 const lastCallback = async ():Promise<void> => {
-  console.log('Show last page');
-  const totalPages = await state.getNumOfPages();
-  if (state.page < totalPages) {
-    state.page = totalPages;
-    document.dispatchEvent(new CustomEvent('turn-the-page'));
+  const pageProp = getPageProp();
+  const totalPages = await getNumberOfPages();
+  if (state[pageProp] < totalPages) {
+    state[pageProp] = totalPages;
+    document.dispatchEvent(new CustomEvent(getEventProp()));
   }
 };
 
