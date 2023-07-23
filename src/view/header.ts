@@ -182,17 +182,20 @@ class Header {
 
     header.append(carCreateModal);
 
-    document.addEventListener('turn-the-page', () => this.checkOneCarProblem);
+    document.addEventListener('turn-the-page', () => this.checkOneCarProblem());
+    document.addEventListener('change-view', () => this.checkOneCarProblem());
 
     return header;
   }
 
   private async checkOneCarProblem(): Promise<void> {
-    const response = await garage.getCars(state.page);
-    if (response.cars.length === 1 && state.currentView === 'GARAGE') {
-      this.raceMenuItem.classList.add('inactive');
-    } else {
-      this.raceMenuItem.classList.remove('inactive');
+    if (state.currentView === 'GARAGE') {
+      const response = await garage.getCars(state.page);
+      if (response.cars.length === 1) {
+        this.raceMenuItem.classList.add('inactive');
+      } else {
+        this.raceMenuItem.classList.remove('inactive');
+      }
     }
   }
 

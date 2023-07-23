@@ -6,9 +6,11 @@ class Winners {
   public async getWinners(
     page = 1,
     limit = 10,
+    sort = 'id',
+    order = 'ASC',
   ): Promise<{ total: number; winners: Winner[] }> {
     const response = await fetch(
-      `${this.winnersURL}?_page=${page}&_limit=${limit}`,
+      `${this.winnersURL}?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`,
     );
     const winners = await response.json();
     const total = Number(response.headers.get('X-Total-Count'));

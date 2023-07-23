@@ -1,6 +1,7 @@
 import garage from '../car/garage';
 import winners from '../winners/winners';
 import View from './view-type';
+import WinnersSortField from './winner-sort-field-type';
 
 class State {
   private currentState;
@@ -13,6 +14,8 @@ class State {
       numOfWinPages: 1,
       currentView: View.GARAGE,
       isRace: false,
+      WinnersSortAsc: true,
+      WinnersSortField: WinnersSortField.id,
     };
   }
 
@@ -27,10 +30,6 @@ class State {
     this.currentState.numOfWinPages = Math.ceil(response.total / 10);
     return this.currentState.numOfWinPages;
   }
-
-  // public get numOfPages():number {
-  //   return this.currentState.numOfPages;
-  // }
 
   public set page(value:number) {
     this.currentState.currentPage = value;
@@ -68,6 +67,26 @@ class State {
   public get currentView():View {
     this.load();
     return this.currentState.currentView;
+  }
+
+  public set winnersSortAsc(value:boolean) {
+    this.currentState.WinnersSortAsc = value;
+    this.save();
+  }
+
+  public get winnersSortAsc():boolean {
+    this.load();
+    return this.currentState.WinnersSortAsc;
+  }
+
+  public set winnersSortField(value:WinnersSortField) {
+    this.currentState.WinnersSortField = value;
+    this.save();
+  }
+
+  public get winnersSortField():WinnersSortField {
+    this.load();
+    return this.currentState.WinnersSortField;
   }
 
   private save():void {

@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import createHtml from '../utils/create-html';
 import winners from '../winners/winners';
 import state from '../state/state';
@@ -7,26 +6,73 @@ import garage from '../car/garage';
 import getCarImage from './car-img';
 import '../styles/winners.css';
 import renderPaginationButtons from './pagination-buttons-view';
+import WinnersSortField from '../state/winner-sort-field-type';
 
-const renderWinnersHeader = (qty: number, page: number):HTMLElement => {
+const renderWinnersHeader = (qty: number, page: number): HTMLElement => {
   let headerContent = '';
   if (qty === 0) {
     headerContent = 'No Winners yet. Run the Race first.';
-  } else if (qty <= 7) {
+  } else if (qty <= 10) {
     headerContent = `Total Winners on the list: ${qty}`;
   } else {
-    const from = (10 * (page - 1) + 1);
-    const to = Math.min(qty, (10 * page));
+    const from = 10 * (page - 1) + 1;
+    const to = Math.min(qty, 10 * page);
     headerContent = `Total Winners on the list: ${qty}<br>
     Winners on this page: from ${from} to ${to}`;
   }
 
-  const winnersHeader = createHtml('section', 'winners-header', undefined, headerContent);
+  const winnersHeader = createHtml(
+    'section',
+    'winners-header',
+    undefined,
+    headerContent,
+  );
   return winnersHeader;
 };
 
-const tabHeadCallback = (event: Event):void => {
-  if (event.currentTarget instanceof HTMLElement) console.log(event.currentTarget.id);
+// const tabHeadCallback = (event: Event): void => {
+//   const target = event.currentTarget;
+//   if (target instanceof HTMLElement) {
+//     let param = WinnersSortField.time;
+//     let param2 = WinnersSortField.wins;
+//     if (target.id === 'tab-head-wins') {
+//       param = WinnersSortField.wins;
+//       param2 = WinnersSortField.time;
+//     }
+//     const secondCol = document.querySelector(`#tab-head-${param2}`);
+//     if (secondCol instanceof HTMLElement) {
+//       secondCol.classList.remove('asc', 'desc');
+//     }
+//     if (state.winnersSortField === param) {
+//       state.winnersSortAsc = !state.winnersSortAsc;
+//       if (state.winnersSortAsc) {
+//         target.classList.add('asc');
+//         target.classList.remove('desc');
+//       } else {
+//         target.classList.remove('asc');
+//         target.classList.add('desc');
+//       }
+//     } else {
+//       state.winnersSortField = WinnersSortField[param];
+//       state.winnersSortAsc = true;
+//       target.classList.add('asc');
+//     }
+//     document.dispatchEvent(new CustomEvent('turn-winners-page'));
+//   }
+// };
+
+const tabHeadCallback = (event: Event): void => {
+  const target = event.currentTarget;
+  if (target instanceof HTMLElement) {
+    const param = target.id === 'tab-head-wins' ? WinnersSortField.wins : WinnersSortField.time;
+    if (state.winnersSortField === param) {
+      state.winnersSortAsc = !state.winnersSortAsc;
+    } else {
+      state.winnersSortField = WinnersSortField[param];
+      state.winnersSortAsc = true;
+    }
+    document.dispatchEvent(new CustomEvent('turn-winners-page'));
+  }
 };
 
 const renderWinners = async (winnersArr: Winner[]): Promise<HTMLElement> => {
@@ -36,15 +82,21 @@ const renderWinners = async (winnersArr: Winner[]): Promise<HTMLElement> => {
   const tabHeadCar = createHtml('div', 'winner-table-header', 'tab-head-car', 'Car');
   const tabHeadWins = createHtml('div', 'winner-table-header', 'tab-head-wins', 'Number of wins', tabHeadCallback);
   const tabHeadTime = createHtml('div', 'winner-table-header', 'tab-head-time', 'Best result (sec)', tabHeadCallback);
+  if (state.winnersSortField === 'wins') {
+    const addClass = state.winnersSortAsc ? 'asc' : 'desc';
+    tabHeadWins.classList.add(addClass);
+  }
+  if (state.winnersSortField === 'time') {
+    const addClass = state.winnersSortAsc ? 'asc' : 'desc';
+    tabHeadTime.classList.add(addClass);
+  }
 
   output.append(tabHeadNr, tabHeadCar, tabHeadWins, tabHeadTime);
 
   const carsResponse = await garage.getAllCars();
   const carsArray = carsResponse.cars;
-  // console.log(winnersArr);
   winnersArr.forEach(async (winner, i) => {
     const car = carsArray.find((item) => item.id === winner.id);
-    // console.log(car);
     const nr = createHtml('div', 'winner-table-nr', undefined, `${(state.winnersPage - 1) * 10 + i + 1}`);
     const img = createHtml('div', 'winner-table-img', undefined);
     const model = createHtml('div', 'winner-table-model', undefined);
@@ -65,7 +117,8 @@ const renderWinners = async (winnersArr: Winner[]): Promise<HTMLElement> => {
 
 const renderWinnersView = async (): Promise<DocumentFragment> => {
   const winnersView = document.createDocumentFragment();
-  let response = await winners.getWinners(state.winnersPage);
+  const order = state.winnersSortAsc ? 'ASC' : 'DESC';
+  let response = await winners.getWinners(state.winnersPage, 10, state.winnersSortField, order);
   if (!response.winners.length && state.winnersPage > 1) {
     state.winnersPage -= 1;
     response = await winners.getWinners(state.winnersPage);
@@ -77,9 +130,7 @@ const renderWinnersView = async (): Promise<DocumentFragment> => {
   if (response.total > 10) {
     console.log(response.total);
     const totalPages = Math.ceil(response.total / 10);
-    winnersView.append(
-      renderPaginationButtons(totalPages, state.winnersPage),
-    );
+    winnersView.append(renderPaginationButtons(totalPages, state.winnersPage));
   }
   return winnersView;
 };
