@@ -24,19 +24,18 @@ const generateCarName = ():string => {
   return `${carBrands[i].brand} ${carBrands[i].models[j]}`;
 };
 
-const generateCars = async (qty = 20):Promise<void> => {
+const generateCars = async (qty = 100):Promise<void> => {
   const set = new Set<string>();
   while (set.size < qty) {
     set.add(generateCarName());
   }
-  console.log(set);
   const newCarsArr:Promise<void>[] = [];
   set.forEach(async (carName) => {
     const carColor = generateCarColor();
     newCarsArr.push(garage.createCar(carName, carColor));
   });
   await Promise.all(newCarsArr);
-  window.location.reload();
+  document.dispatchEvent(new CustomEvent('turn-the-page'));
 };
 
 export default generateCars;

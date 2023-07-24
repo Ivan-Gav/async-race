@@ -21,7 +21,7 @@ class Garage {
   public async getCar(id: number): Promise<Car> {
     const response = await fetch(`${this.garageURL}/${id}`);
     const result = await response.json();
-    const car = Object.assign(result, Car);
+    const car = result as Car;
     return car;
   }
 
@@ -30,15 +30,13 @@ class Garage {
       name,
       color,
     };
-    const response = await fetch(this.garageURL, {
+    await fetch(this.garageURL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(car),
     });
-    const addedCar = await response.json();
-    console.log(addedCar);
   }
 
   public async deleteCar(id: number): Promise<void> {
@@ -51,7 +49,7 @@ class Garage {
         document.dispatchEvent(new CustomEvent('turn-the-page'));
       }
     } catch (error) {
-      console.log(error);
+      // do nothing
     }
   }
 
@@ -60,20 +58,13 @@ class Garage {
       name,
       color,
     };
-    const response = await fetch(`${this.garageURL}/${id}`, {
+    await fetch(`${this.garageURL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(car),
     });
-    if (response.ok) {
-      const updatedCar = await response.json();
-      console.log('Car successfully updated with following data:');
-      console.log(updatedCar);
-    } else {
-      console.log('Car update failure!');
-    }
   }
 }
 

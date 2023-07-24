@@ -100,7 +100,6 @@ class Modal {
 
   private buildForm(carId = 0): HTMLFormElement {
     const editForm = createHtml('form', 'edit-car', `f${carId}`);
-    // editForm.setAttribute('method', 'dialog');
     const submitBtn = createHtml(
       'button',
       'modal-submit-btn',

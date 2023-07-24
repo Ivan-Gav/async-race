@@ -8,25 +8,8 @@ import garage from '../car/garage';
 import View from '../state/view-type';
 
 const generate = (): void => {
-  console.log('Button Generate Cars pressed');
   generateCars();
 };
-
-// const goToWinners = (): void => {
-//   if (state.currentView === 'GARAGE') {
-//     state.currentView = View.WINNERS;
-//     document.dispatchEvent(new CustomEvent('change-view'));
-//     console.log('Change view to WINNERS');
-//   }
-// };
-
-// const goToGarage = (): void => {
-//   if (state.currentView === 'WINNERS') {
-//     state.currentView = View.GARAGE;
-//     document.dispatchEvent(new CustomEvent('change-view'));
-//     console.log('Change view to GARAGE');
-//   }
-// };
 
 modal.setCreateCallback();
 const carCreateModal = modal.renderModal('car-create-modal');
@@ -34,80 +17,6 @@ const carCreateModal = modal.renderModal('car-create-modal');
 const createCar = (): void => {
   carCreateModal.showModal();
 };
-
-// const renderHeader = (): HTMLElement => {
-//   const header = createHtml('header');
-
-//   const nav = createHtml('nav', 'navbar');
-//   const ulNavbar = createHtml('ul');
-//   const garageMenuItem = createHtml(
-//     'li',
-//     undefined,
-//     'garage-menu-item',
-//     '<span>Garage</span>',
-//     goToGarage,
-//   );
-//   const ulGarage = createHtml('ul');
-//   const createCarMenuItem = createHtml(
-//     'li',
-//     'menu-item_nested',
-//     'create-car-item',
-//     '<span>Create Car</span>',
-//     createCar,
-//   );
-//   const generateCarsMenuItem = createHtml(
-//     'li',
-//     'menu-item_nested',
-//     'generate-cars-item',
-//     '<span>Generate Cars</span>',
-//     generate,
-//   );
-//   const raceMenuItem = createHtml(
-//     'li',
-//     undefined,
-//     'race-menu-item',
-//     '<span>Start Race</span>',
-//     startRace,
-//   );
-//   const winnersMenuItem = createHtml(
-//     'li',
-//     undefined,
-//     'winners-menu-item',
-//     '<span>Hall of Fame</span>',
-//     goToWinners,
-//   );
-
-//   if (state.currentView === 'GARAGE') {
-//     garageMenuItem.classList.add('selected');
-//     winnersMenuItem.classList.remove('selected');
-//   } else {
-//     winnersMenuItem.classList.add('selected');
-//     garageMenuItem.classList.remove('selected');
-//   }
-
-//   ulGarage.append(createCarMenuItem, generateCarsMenuItem);
-//   garageMenuItem.append(ulGarage);
-//   ulNavbar.append(garageMenuItem, raceMenuItem, winnersMenuItem);
-//   nav.append(ulNavbar);
-//   header.append(nav);
-
-//   header.append(carCreateModal);
-
-//   const checkOneCarProblem = async (): Promise<void> => {
-//     const response = await garage.getCars(state.page);
-//     if (response.cars.length === 1 && state.currentView === 'GARAGE') {
-//       raceMenuItem.classList.add('inactive');
-//     } else {
-//       raceMenuItem.classList.remove('inactive');
-//     }
-//   };
-
-//   document.addEventListener('turn-the-page', checkOneCarProblem);
-
-//   return header;
-// };
-
-// export default renderHeader;
 
 class Header {
   private garageMenuItem;

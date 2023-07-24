@@ -47,7 +47,7 @@ class Winners {
       });
       if (!response.ok) throw new Error(`Can't delete car with id=${id} from the Winners list.`);
     } catch (error) {
-      console.log(error);
+      // do nothing
     }
   }
 
@@ -69,7 +69,6 @@ class Winners {
   public async addWinner(id:number, time:number):Promise<void> {
     try {
       const winnerRecord = await this.getWinner(id);
-      console.log(winnerRecord);
       let newTime = winnerRecord.time;
       if (time < winnerRecord.time) newTime = time;
       this.updateWinner(id, newTime, (winnerRecord.wins + 1));

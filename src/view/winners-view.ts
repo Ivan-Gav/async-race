@@ -30,37 +30,6 @@ const renderWinnersHeader = (qty: number, page: number): HTMLElement => {
   return winnersHeader;
 };
 
-// const tabHeadCallback = (event: Event): void => {
-//   const target = event.currentTarget;
-//   if (target instanceof HTMLElement) {
-//     let param = WinnersSortField.time;
-//     let param2 = WinnersSortField.wins;
-//     if (target.id === 'tab-head-wins') {
-//       param = WinnersSortField.wins;
-//       param2 = WinnersSortField.time;
-//     }
-//     const secondCol = document.querySelector(`#tab-head-${param2}`);
-//     if (secondCol instanceof HTMLElement) {
-//       secondCol.classList.remove('asc', 'desc');
-//     }
-//     if (state.winnersSortField === param) {
-//       state.winnersSortAsc = !state.winnersSortAsc;
-//       if (state.winnersSortAsc) {
-//         target.classList.add('asc');
-//         target.classList.remove('desc');
-//       } else {
-//         target.classList.remove('asc');
-//         target.classList.add('desc');
-//       }
-//     } else {
-//       state.winnersSortField = WinnersSortField[param];
-//       state.winnersSortAsc = true;
-//       target.classList.add('asc');
-//     }
-//     document.dispatchEvent(new CustomEvent('turn-winners-page'));
-//   }
-// };
-
 const tabHeadCallback = (event: Event): void => {
   const target = event.currentTarget;
   if (target instanceof HTMLElement) {
@@ -90,7 +59,6 @@ const renderWinners = async (winnersArr: Winner[]): Promise<HTMLElement> => {
     const addClass = state.winnersSortAsc ? 'asc' : 'desc';
     tabHeadTime.classList.add(addClass);
   }
-
   output.append(tabHeadNr, tabHeadCar, tabHeadWins, tabHeadTime);
 
   const carsResponse = await garage.getAllCars();
@@ -106,11 +74,8 @@ const renderWinners = async (winnersArr: Winner[]): Promise<HTMLElement> => {
       img.innerHTML = getCarImage(car.name, car.color);
       model.innerHTML = car.name;
     }
-
     output.append(nr, img, model, wins, time);
   });
-
-  // const response = await winners.getWinners();
 
   return output;
 };
@@ -128,7 +93,6 @@ const renderWinnersView = async (): Promise<DocumentFragment> => {
     await renderWinners(response.winners),
   );
   if (response.total > 10) {
-    console.log(response.total);
     const totalPages = Math.ceil(response.total / 10);
     winnersView.append(renderPaginationButtons(totalPages, state.winnersPage));
   }

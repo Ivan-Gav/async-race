@@ -27,7 +27,6 @@ const button = (
 
 const tuneCallback = async (event: Event): Promise<void> => {
   if (event.currentTarget instanceof HTMLElement) {
-    console.log('open tune modal');
     const btn = event.currentTarget;
     const id = Number(btn.dataset.carId);
     if (id) {
@@ -53,7 +52,6 @@ const removeCallback = async (event: Event): Promise<void> => {
     const id = btn.dataset.carId;
     if (id) {
       await garage.deleteCar(Number(id));
-      // window.location.reload();
     }
   }
 };
@@ -63,16 +61,10 @@ const startCallback = async (event: Event): Promise<void> => {
     const btn = event.currentTarget;
     const id = btn.dataset.carId;
     if (id) {
-      console.log(`start car id=${id}`);
-      // btn.classList.add('inactive');
-      // const stopBtn = document.querySelector(`#${stopBtnText}-${id}`);
-      // if (stopBtn) {
-      //   stopBtn.classList.remove('inactive');
-      // }
       try {
         await drive(Number(id));
       } catch (error) {
-        console.log(`car id=${id} broke down`);
+        // do nothing
       }
     }
   }
@@ -83,14 +75,7 @@ const stopCallback = (event: Event): void => {
   if (btn instanceof HTMLElement) {
     const id = btn.dataset.carId;
     if (id) {
-      console.log('stop');
       stop(Number(id));
-      // btn.classList.add('inactive');
-      // const startBtn = document.querySelector(`#${startBtnText}-${id}`);
-      // if (startBtn) {
-      // startBtn.addEventListener('click', startCallback);
-      // startBtn.classList.remove('inactive');
-      // }
     }
   }
 };
