@@ -4,7 +4,7 @@ This project was done as part of [RS School JS Frontend course](https://rs.schoo
 The topic of the project is **client - server interaction**.
 If you're interested, here is the [link](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/async-race.md) to the detailed description of the task.
 
-The working app is deployed [here]() but to enjoy the game you'll going to have to start the server for it following [these instructions](https://github.com/mikhama/async-race-api). 
+The working app is deployed [here](https://ivan-gav.github.io/async-race/) but to enjoy the game you'll going to have to start the server for it following [these instructions](https://github.com/mikhama/async-race-api). 
 
 Technology stack:
 - TypeScript
